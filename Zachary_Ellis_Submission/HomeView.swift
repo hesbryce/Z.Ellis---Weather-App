@@ -16,23 +16,12 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                // Search Bar
-                HStack {
-                    TextField("Search location", text: $searchText)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.leading)
-                    
-                    Button(action: {
-                        if !searchText.isEmpty {
-                            navigateToSearch = true
-                        }
-                    }) {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.gray)
-                            .padding()
-                    }
-                }
-                .padding()
+                CustomSearchBar(searchText: $searchText) {
+                                    if !searchText.isEmpty {
+                                        navigateToSearch = true
+                                    }
+                                }
+                                
 
                 Spacer()
                 
@@ -54,9 +43,12 @@ struct HomeView: View {
                             .font(.system(size: 64, weight: .bold))
                         
                         HStack(spacing: 20) {
-                            WeatherDetailView(title: "Humidity", value: "\(weather.current.humidity)%")
-                            WeatherDetailView(title: "UV", value: "\(weather.current.uv)")
-                            WeatherDetailView(title: "Feels Like", value: String(format: "%.1f°", weather.current.feelslikeC))
+                            WeatherDetailsRow(details: [
+                                (title: "Humidity", value: "\(weather.current.humidity)%"),
+                                (title: "UV", value: "\(weather.current.uv)"),
+                                (title: "Feels Like", value: String(format: "%.0f°", weather.current.feelslikeC))
+                            ])
+                            .padding(.horizontal)
                         }
                     }
                     .padding()
